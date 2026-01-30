@@ -87,10 +87,10 @@ export function EventCard({ event }: EventCardProps) {
   const config = eventConfig[event.type] || eventConfig.thought
   const Icon = config.icon
 
-  const shouldTruncate = event.content.length > TRUNCATE_LENGTH
+  const shouldTruncate = (event.content?.length ?? 0) > TRUNCATE_LENGTH
   const displayContent = shouldTruncate && !isOpen
-    ? `${event.content.slice(0, TRUNCATE_LENGTH)}...`
-    : event.content
+    ? `${event.content?.slice(0, TRUNCATE_LENGTH) ?? ''}...`
+    : event.content ?? ''
 
   const duration = formatDuration(event.metadata.duration)
   const hasParameters = event.metadata.parameters && Object.keys(event.metadata.parameters).length > 0

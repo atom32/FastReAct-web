@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react"
+import React, { useEffect, useRef } from "react"
 
 import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 import type { AgentEvent, Message, AppState } from '@/lib/types'
@@ -108,7 +108,18 @@ export function AppProvider({
   wsUrl = 'ws://localhost:8080/ws',
   demoMode = false // Set to false to connect to real Gateway
 }: AppProviderProps) {
-  const [sessionId] = useState(() => demoMode ? 'demo-session' : generateSessionId())
+  // Use ref to store session ID and useEffect to initialize it after hydration
+  // This prevents hydration mismatch between server and client
+  const sessionIdRef = useRef<string>(demoMode ? 'demo-session' : '')
+  const [sessionId, setSessionId] = useState(() => demoMode ? 'demo-session' : '')
+
+  useEffect(() => {
+    if (!demoMode && !sessionIdRef.current) {
+      sessionIdRef.current = generateSessionId()
+      setSessionId(sessionIdRef.current)
+    }
+  }, [demoMode])
+
   const [messages, setMessages] = useState<Message[]>([])
   const [events, setEvents] = useState<AgentEvent[]>([])
   const [isThinking, setIsThinking] = useState(false)
@@ -157,13 +168,14 @@ export function AppProvider({
     )
   }, [])
 
-  // Only use WebSocket in non-demo mode
+  // Only use WebSocket in non-demo mode when sessionId is ready
+  const wsUrlReady = !demoMode && sessionId !== ''
   const ws = useWebSocket({
-    url: demoMode ? 'ws://disabled' : `${wsUrl}/${sessionId}`,
+    url: demoMode || !wsUrlReady ? 'ws://disabled' : `${wsUrl}/${sessionId}`,
     onEvent: handleEvent,
     onConnect: handleConnect,
     onDisconnect: handleDisconnect,
-    autoReconnect: !demoMode,
+    autoReconnect: !demoMode && wsUrlReady,
   })
 
   // Demo mode: simulate response
