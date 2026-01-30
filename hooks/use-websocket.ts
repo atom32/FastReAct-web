@@ -85,18 +85,22 @@ export function useWebSocket({
         if (!mountedRef.current) return
         try {
           const data = JSON.parse(event.data)
+          console.log('[WebSocket] Received:', data)
+
           const agentEvent: AgentEvent = {
             id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
             type: data.type,
-            content: data.content,
+            content: data.content || '',
             metadata: {
               ...data.metadata,
               timestamp: data.metadata?.timestamp || new Date().toISOString(),
             },
           }
+          console.log('[WebSocket] Processed event:', agentEvent)
           onEvent?.(agentEvent)
         } catch (e) {
           console.error('[v0] Failed to parse WebSocket message:', e)
+          console.error('[v0] Raw data:', event.data)
         }
       }
 

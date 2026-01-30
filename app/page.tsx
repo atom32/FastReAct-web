@@ -18,13 +18,13 @@ export default function HomePage() {
       <AppProvider>
         <div className="flex h-screen flex-col bg-background">
           <Header />
-          <main className="flex flex-1 flex-col overflow-hidden lg:flex-row">
+          <main className="flex flex-1 overflow-hidden lg:flex-row">
             {/* Chat Panel - 60% on desktop */}
-            <div className="flex-1 lg:w-3/5 lg:flex-none">
+            <div className="flex-1 h-full lg:w-3/5 lg:flex-none">
               <ChatPanel />
             </div>
             {/* Event Panel - 40% on desktop, hidden on mobile */}
-            <div className="hidden border-l lg:block lg:w-2/5">
+            <div className="hidden h-full border-l lg:block lg:w-2/5">
               <EventPanel />
             </div>
           </main>
