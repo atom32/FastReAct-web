@@ -13,7 +13,9 @@
       "Bash(npm run dev:*)",
       "Bash(npx next dev --help:*)",
       "Bash(netstat:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(npm run build:*)",
+      "Bash(dir node_modules)"
     ]
   }
 }
