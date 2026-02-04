@@ -1,5 +1,5 @@
 // WebSocket Event Types
-export type EventType = 'thought' | 'action' | 'observation' | 'answer' | 'error' | 'final'
+export type EventType = 'thought' | 'action' | 'observation' | 'answer' | 'error' | 'final' | 'progress'
 
 export interface EventMetadata {
   iteration?: number

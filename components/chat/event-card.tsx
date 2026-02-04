@@ -18,6 +18,7 @@ import {
   AlertCircle,
   ChevronDown,
   Clock,
+  Loader2,
 } from 'lucide-react'
 
 interface EventCardProps {
@@ -63,6 +64,12 @@ const eventConfig: Record<
     color: 'text-red-600 dark:text-red-400',
     bgColor: 'bg-red-50 dark:bg-red-950/50 border-red-200 dark:border-red-800',
     label: 'Error',
+  },
+  progress: {
+    icon: Loader2,
+    color: 'text-cyan-600 dark:text-cyan-400',
+    bgColor: 'bg-cyan-50 dark:bg-cyan-950/50 border-cyan-200 dark:border-cyan-800',
+    label: 'Progress',
   },
 }
 
@@ -111,7 +118,12 @@ export function EventCard({ event }: EventCardProps) {
             <div className="flex items-start gap-2 flex-1 min-w-0">
               {/* Icon */}
               <div className={cn('mt-0.5 shrink-0', config.color)}>
-                <Icon className="size-4" />
+                <Icon
+                  className={cn(
+                    'size-4',
+                    event.type === 'progress' && 'animate-spin'
+                  )}
+                />
               </div>
 
               {/* Content */}
